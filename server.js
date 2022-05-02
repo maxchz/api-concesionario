@@ -3,26 +3,22 @@
 // Gracias a que agregue la linea "type":"module" en el packege.json, 
 //la importacion la puedo hacer de forma tradicional
 import Express from 'express';
-import {MongoClient, ObjectId} from 'mongodb';
 import Cors from 'cors';
 import dotenv from 'dotenv';
+import {conectarDB, getDB} from './db/db.js';
+
 
 
 dotenv.config({path:'./.env'});
 
-const stringConexion= process.env.DATABASE_URL;
 
 // Cliente creado al que debo conectarme, a la clase MongoClient debo pasarle dos parametros
 // el string de concexion y dos parametros que recomienda mongo useNewUrlParser y useUnifiedTopology
 
-const client= new MongoClient(stringConexion,{
-    useNewUrlParser:true,
-    useUnifiedTopology:true,
-})
 
-//Declaro una variable baseDeDatos global que servira para realizar tareas sobre la BD
 
-let baseDeDatos;
+//Declaro una variable baseDeDatos global que servira para realizar tareas sobre la BD, se declara en un archivo separado, en db.js
+
 
 // Declaramos la variable que sera el servidor, que tiene que escuchar un puerto especifico
 
@@ -43,6 +39,7 @@ app.get("/vehiculos",(req, res)=>{
     // ];
 
     // Codigo para entregar una devulucion de datos desde la BD a traves del backend
+    const baseDeDatos= getDB();
     baseDeDatos.collection('vehiculo').find({}).limit(50).toArray((err,resultado)=>{
         if(err){
             res.status(500).send("Error consultando los vehiculos");
@@ -73,6 +70,8 @@ app.post ("/vehiculos/nuevo",(req, res)=>{
             //Aqui uso funciones de mongo para crear o buscar informacion en la BD
             // La siguiente linea de codigo es una baseDeDatos a la coleecion(una BD) vehiculo e inserta los datos de
             // datosVehiculos, y dependiendo si hubo un error o no, me muestra un mnesaje por consola
+            const baseDeDatos= getDB();
+
             baseDeDatos.collection('vehiculo').insertOne(datosVehiculos,(err,result)=>{
                 if(err){
                     console.error(err);
@@ -107,6 +106,9 @@ app.patch('/vehiculos/editar',(req,res)=>{
    //operaciones una operacion atomica, una instruccion que le envio al backend, que le indico que voy a editar
    const operacion={
        $set: edicion,};
+
+   const baseDeDatos= getDB();
+    
    baseDeDatos
     .collection('vehiculo')
     .findOneAndUpdate(filtroVehiculo,operacion,{upsert:true,returnOriginal:true},(err,result)=>{
@@ -124,6 +126,8 @@ app.patch('/vehiculos/editar',(req,res)=>{
 app.delete('/vehiculos/eliminar', (req,res)=>{
 
     const filtroVehiculo= {_id:new ObjectId(req.body.id)};
+    const baseDeDatos= getDB();
+
     baseDeDatos.collection('vehiculo').deleteOne(filtroVehiculo,(err,result)=>{
         if(err){
             console.error(err);
@@ -136,29 +140,18 @@ app.delete('/vehiculos/eliminar', (req,res)=>{
 
 
 
+
+
 // Defino un codigo main principal que es el encargado de conectarse a la BD, se ejecuta todo el tiempo
 // que cuando se coecte mme retornara el app.listen() que tiene un ciclo for while que hace que se ejecute todo el tiempo
 
  const main =()=>{
      //A la funcion connect se le pasand dos parametros un error spor si no funciona y la BD propiemente dicha
      //Con esta linea de codigo se realiza la conexion a la BD
-     client.connect((err,db)=>{
-         if(err){
-             console.error("Eror la conectar a la base de datos");
-         }
-         //Con la variable baseDeDatos trabajare cuando queira hacer algo en mi BD, 
-         //le agino el valor de la conxion a la BD
-         baseDeDatos=db.db('concesionario');
-         console.log('baseDeDatos exitosa');
-         return app.listen(process.env.PORT,()=>{
-            console.log(`escuchando puerto ${process.env.PORT}!!! `); 
-
-     });
-     
-    });
-
- };
-// Llamo a la funcion main
- main();
+     return (app.listen(process.env.PORT,()=>{
+        console.log(`escuchando puerto ${process.env.PORT}!!! `)}))
+};
+// Llamo a la funcion conectar y le paso el name, que seria el callback que ejecuta conectarDB una vez que realizo su tareas de conectarse
+ conectarDB(main);
 
 
