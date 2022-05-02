@@ -5,18 +5,19 @@
 import Express from 'express';
 import {MongoClient, ObjectId} from 'mongodb';
 import Cors from 'cors';
+import dotenv from 'dotenv';
 
 
-const stringbaseDeDatos=
-'mongodb+srv://maxchz:devcba2022@proyectoconcesionario.naiqp.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+dotenv.config({path:'./.env'});
+
+const stringConexion= process.env.DATABASE_URL;
 
 // Cliente creado al que debo conectarme, a la clase MongoClient debo pasarle dos parametros
 // el string de concexion y dos parametros que recomienda mongo useNewUrlParser y useUnifiedTopology
 
-const client= new MongoClient(stringbaseDeDatos,{
+const client= new MongoClient(stringConexion,{
     useNewUrlParser:true,
     useUnifiedTopology:true,
-
 })
 
 //Declaro una variable baseDeDatos global que servira para realizar tareas sobre la BD
@@ -149,8 +150,8 @@ app.delete('/vehiculos/eliminar', (req,res)=>{
          //le agino el valor de la conxion a la BD
          baseDeDatos=db.db('concesionario');
          console.log('baseDeDatos exitosa');
-         return app.listen(5000,()=>{
-            console.log('escuchando puerto 5000!!! '); 
+         return app.listen(process.env.PORT,()=>{
+            console.log(`escuchando puerto ${process.env.PORT}!!! `); 
 
      });
      
