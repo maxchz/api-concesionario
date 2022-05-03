@@ -1,6 +1,6 @@
 import Express from 'express';
 import {getDB} from '../../db/db.js';
-import {queryAllVehicles, crearVehiculo} from '../../controllers/vehiculos/controller.js';
+import {queryAllVehicles, crearVehiculo, editarVehiculo} from '../../controllers/vehiculos/controller.js';
 
 
 
@@ -17,7 +17,6 @@ const genericCallback=(res)=>{
     }
 
    };
-
 
 
 //reemplazamos los app.get por los rutasVehiculo.route
@@ -39,44 +38,15 @@ rutasVehiculos.route("/vehiculos").get((req, res)=>{
 
     // res.send(vehiculos);
 });
-
 // Aqui se establece la ruta para comunicacion completa desde el fron al back, 
 // uso Insomnia para simular envio de datos desde front
 rutasVehiculos.route ("/vehiculos/nuevo").post((req, res)=>{
 
     crearVehiculo(req.body, genericCallback(res));
-
-   
-
 });
 
 rutasVehiculos.route('/vehiculos/editar').patch((req,res)=>{
-   const edicion=req.body;
-   console.log(edicion);
-   const filtroVehiculo= {_id:new ObjectId(edicion.id)};
-   //Si envie los id por el body debo borralos por que sino se incorporan aa la BD y el elemento editado queda con dos id 
-   //si mando los id por las rutas eso no es necesario
-
-   delete edicion.id;
-
-   //operaciones una operacion atomica, una instruccion que le envio al backend, que le indico que voy a editar
-   const operacion={
-       $set: edicion,};
-
-   const baseDeDatos= getDB();
-    
-   baseDeDatos
-    .collection('vehiculo')
-    .findOneAndUpdate(filtroVehiculo,operacion,{upsert:true,returnOriginal:true},(err,result)=>{
-        if(err){
-            console.error("Error actualizando el vehiculo", err);
-            res.sendStatus(500);
-        }else{
-            console.log("Actualizado con exito");
-            res.sendStatus(200);
-            
-        }
-    })
+  editarVehiculo(req.body, genericCallback(res))
 });
 
 rutasVehiculos.route('/vehiculos/eliminar').delete( (req,res)=>{

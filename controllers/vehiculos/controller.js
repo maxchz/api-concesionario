@@ -1,4 +1,5 @@
 import {getDB} from '../../db/db.js';
+import {ObjectId} from 'mongodb';
 
 const queryAllVehicles= async (callback)=>{
 
@@ -10,6 +11,7 @@ await  baseDeDatos
  .toArray(callback);
   };
 
+//controlador para crear nuevo vehiculo
 const crearVehiculo=async (datosVehiculos, callback)=>{
     
         if (
@@ -24,15 +26,35 @@ const crearVehiculo=async (datosVehiculos, callback)=>{
             // datosVehiculos, y dependiendo si hubo un error o no, me muestra un mnesaje por consola
             const baseDeDatos= getDB();
 
-            baseDeDatos.collection('vehiculo').insertOne(datosVehiculos,callback);
+            await baseDeDatos.collection('vehiculo').insertOne(datosVehiculos,callback);
             
             }else{
                 res.sendStatus(500);
             }
-        }
+        };
+
+//controlador para editar  vehiculos
+
+const editarVehiculo=async (edicion, callback)=>{
+    const filtroVehiculo= {_id:new ObjectId(edicion.id)};
+    //Si envie los id por el body debo borralos por que sino se incorporan aa la BD y el elemento editado queda con dos id 
+    //si mando los id por las rutas eso no es necesario
+ 
+    delete edicion.id;
+ 
+    //operaciones una operacion atomica, una instruccion que le envio al backend, que le indico que voy a editar
+    const operacion={
+        $set: edicion,};
+ 
+    const baseDeDatos= getDB();
+     
+    await baseDeDatos
+     .collection('vehiculo')
+     .findOneAndUpdate(filtroVehiculo,operacion,{upsert:true,returnOriginal:true},callback);
+     };
        
 
   
 
 
-export {queryAllVehicles, crearVehiculo};
+export {queryAllVehicles, crearVehiculo, editarVehiculo};
