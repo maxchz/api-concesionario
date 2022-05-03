@@ -4,7 +4,7 @@ import {ObjectId} from 'mongodb';
 const queryAllVehicles= async (callback)=>{
 
  const baseDeDatos= getDB();
-await  baseDeDatos
+ await  baseDeDatos
  .collection('vehiculo')
  .find({})
  .limit(50)
@@ -53,8 +53,12 @@ const editarVehiculo=async (edicion, callback)=>{
      .findOneAndUpdate(filtroVehiculo,operacion,{upsert:true,returnOriginal:true},callback);
      };
        
+const eliminarVehiculo=async (id, callback)=>{
+    const filtroVehiculo= {_id:new ObjectId(id)};
+    const baseDeDatos= getDB();
 
-  
+    await baseDeDatos.collection('vehiculo').deleteOne(filtroVehiculo,callback);
+    
+};
 
-
-export {queryAllVehicles, crearVehiculo, editarVehiculo};
+export {queryAllVehicles, crearVehiculo, editarVehiculo, eliminarVehiculo};
