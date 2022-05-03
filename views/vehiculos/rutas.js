@@ -22,7 +22,6 @@ const genericCallback=(res)=>{
 
 rutasVehiculos.route("/vehiculos").get((req, res)=>{
     console.log("alguien hizo get en la ruta /vehiculos");
-    
     queryAllVehicles(genericCallback(res));
     //Codigo de ejemplo de una entrega de datos en formato Json al frontend
     // const vehiculos =[
@@ -44,12 +43,12 @@ rutasVehiculos.route ("/vehiculos/nuevo").post((req, res)=>{
     crearVehiculo(req.body, genericCallback(res));
 });
 
-rutasVehiculos.route('/vehiculos/editar').patch((req,res)=>{
-  editarVehiculo(req.body, genericCallback(res));
+rutasVehiculos.route('/vehiculos/:id').patch((req,res)=>{
+  editarVehiculo(req.params.id, req.body,genericCallback(res));
 });
 
-rutasVehiculos.route('/vehiculos/eliminar').delete( (req,res)=>{
-    eliminarVehiculo(req.body.id, genericCallback(res));
+rutasVehiculos.route('/vehiculos/:id').delete( (req,res)=>{
+    eliminarVehiculo(req.params.id, genericCallback(res));
    
 });
 

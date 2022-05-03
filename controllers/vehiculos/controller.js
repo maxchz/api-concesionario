@@ -35,12 +35,11 @@ const crearVehiculo=async (datosVehiculos, callback)=>{
 
 //controlador para editar  vehiculos
 
-const editarVehiculo=async (edicion, callback)=>{
-    const filtroVehiculo= {_id:new ObjectId(edicion.id)};
+const editarVehiculo=async (id, edicion, callback)=>{
+    const filtroVehiculo= {_id:new ObjectId(id)};
     //Si envie los id por el body debo borralos por que sino se incorporan aa la BD y el elemento editado queda con dos id 
     //si mando los id por las rutas eso no es necesario
  
-    delete edicion.id;
  
     //operaciones una operacion atomica, una instruccion que le envio al backend, que le indico que voy a editar
     const operacion={
