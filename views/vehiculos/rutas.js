@@ -1,5 +1,5 @@
 import Express from 'express';
-import {queryAllVehicles, crearVehiculo, editarVehiculo, eliminarVehiculo} from '../../controllers/vehiculos/controller.js';
+import {queryAllVehicles, crearVehiculo, editarVehiculo, eliminarVehiculo,consultarVehiculo} from '../../controllers/vehiculos/controller.js';
 
 
 
@@ -50,6 +50,14 @@ rutasVehiculos.route('/vehiculos/:id').patch((req,res)=>{
 rutasVehiculos.route('/vehiculos/:id').delete( (req,res)=>{
     eliminarVehiculo(req.params.id, genericCallback(res));
    
+});
+
+//Ruta del filtro consultarVehiculo
+
+rutasVehiculos.route("/vehiculos/:id").get((req, res)=>{
+    console.log("alguien hizo get en la ruta /vehiculos");
+    consultarVehiculo(req.params.id, genericCallback(res));
+ 
 });
 
 export default rutasVehiculos;

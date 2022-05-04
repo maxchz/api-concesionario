@@ -7,6 +7,10 @@ import Cors from 'cors';
 import dotenv from 'dotenv';
 import {conectarDB} from './db/db.js';
 import rutasVehiculos from './views/vehiculos/rutas.js';
+import rutasUsuarios from './views/usuarios/rutas.js';
+import rutasVentas from './views/ventas/rutas.js';
+
+
 
 
 
@@ -31,6 +35,9 @@ app.use(Cors());
 
 // le indico al server que rutas debe usar, exportamos el codgio de rutas.js
 app.use(rutasVehiculos);
+app.use(rutasUsuarios);
+app.use(rutasVentas);
+
 
 
 

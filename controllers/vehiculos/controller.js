@@ -33,6 +33,17 @@ const crearVehiculo=async (datosVehiculos, callback)=>{
             }
         };
 
+//agergamos un filtro de ejemplo, dado que esta separado la conexion a la bd, las tareas de las rutas y el pocesamiento del backend
+//resulta mas facil aplicar un filtro cualquiera que sea
+//una vez definido el filtro debo crear la correspondiente ruta, en el archivo ruta.js
+const consultarVehiculo=async(id,callback)=>{
+    const baseDeDatos= getDB();
+ await  baseDeDatos
+ .collection('vehiculo')
+ .findOne({_id:new ObjectId(id)}, callback);
+ 
+}        
+
 //controlador para editar  vehiculos
 
 const editarVehiculo=async (id, edicion, callback)=>{
@@ -60,4 +71,4 @@ const eliminarVehiculo=async (id, callback)=>{
     
 };
 
-export {queryAllVehicles, crearVehiculo, editarVehiculo, eliminarVehiculo};
+export {queryAllVehicles, crearVehiculo, editarVehiculo, eliminarVehiculo, consultarVehiculo};
