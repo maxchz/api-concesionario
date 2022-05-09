@@ -9,8 +9,9 @@ import {conectarDB} from './db/db.js';
 import rutasVehiculos from './views/vehiculos/rutas.js';
 import rutasUsuarios from './views/usuarios/rutas.js';
 import rutasVentas from './views/ventas/rutas.js';
-
-
+import jwt from 'express-jwt';
+import jwks  from 'jwks-rsa';
+import { auth } from 'express-oauth2-jwt-bearer';
 
 
 
@@ -24,7 +25,6 @@ dotenv.config({path:'./.env'});
 
 //Declaro una variable baseDeDatos global que servira para realizar tareas sobre la BD, se declara en un archivo separado, en db.js
 
-
 // Declaramos la variable que sera el servidor, que tiene que escuchar un puerto especifico
 
 const app=Express();
@@ -33,10 +33,21 @@ app.use(Express.json());
 //El cors permite que expres comparta informacion a solicitudesd de otro origen 
 app.use(Cors());
 
+
+// Confirmar si los JWT son validos a Auth0
+
+const checkJwt = auth({
+    audience: 'api-auth-concesionario',
+    issuerBaseURL: `https://concecionario-vehiculos.us.auth0.com/`,
+  });
+
+app.use(checkJwt);
 // le indico al server que rutas debe usar, exportamos el codgio de rutas.js
 app.use(rutasVehiculos);
 app.use(rutasUsuarios);
 app.use(rutasVentas);
+
+
 
 
 

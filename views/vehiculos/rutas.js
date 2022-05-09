@@ -38,7 +38,7 @@ rutasVehiculos.route("/vehiculos").get((req, res)=>{
 });
 // Aqui se establece la ruta para comunicacion completa desde el fron al back, 
 // uso Insomnia para simular envio de datos desde front
-rutasVehiculos.route ("/vehiculos/nuevo").post((req, res)=>{
+rutasVehiculos.route ("/vehiculos/nuevo/").post((req, res)=>{
 
     crearVehiculo(req.body, genericCallback(res));
 });
