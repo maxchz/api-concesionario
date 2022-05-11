@@ -41,6 +41,9 @@ const checkJwt = auth({
     issuerBaseURL: `https://concecionario-vehiculos.us.auth0.com/`,
   });
 
+
+//4 Y 5- ENVIAMOS DATOS AL BACKEND PARA QUE DEVUELVA SI ES VALIDO O NO
+
 app.use(checkJwt);
 // le indico al server que rutas debe usar, exportamos el codgio de rutas.js
 app.use(rutasVehiculos);

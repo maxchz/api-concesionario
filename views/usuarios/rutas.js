@@ -1,5 +1,5 @@
 import Express from 'express';
-import {queryAllUsers, crearUsuario, editarUsuario, eliminarUsuario,consultarUsuario} from '../../controllers/Usuarios/controller.js';
+import {queryAllUsers, crearUsuario, editarUsuario, eliminarUsuario,consultarUsuario, consultarOCrearUsuario} from '../../controllers/Usuarios/controller.js';
 
 
 
@@ -35,6 +35,14 @@ rutasUsuarios.route('/usuarios/:id').patch((req,res)=>{
 rutasUsuarios.route('/usuarios/:id').delete( (req,res)=>{
     eliminarUsuario(req.params.id, genericCallback(res));
    
+});
+
+//Ruta para self, consultasi el usuario logeado esta registrado en el back
+rutasUsuarios.route("/usuarios/self").get((req, res)=>{
+    console.log("alguien hizo get en la ruta /self");
+    consultarOCrearUsuario(req, genericCallback(res));
+    // consultarUsuario(req.params.id, genericCallback(res));
+ 
 });
 
 

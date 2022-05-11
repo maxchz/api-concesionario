@@ -1,5 +1,6 @@
 import {getDB} from '../../db/db.js';
 import {ObjectId} from 'mongodb';
+import jwt_decode from 'jwt-decode';
 
 const queryAllUsers= async (callback)=>{
 
@@ -28,6 +29,37 @@ const consultarUsuario=async(id,callback)=>{
  
 }        
 
+//controlador para consultar usuario logeado en la BD o crearlo si no esta en la BD
+const consultarOCrearUsuario= async (req, callback)=>{
+    //6.1.obtener los datos del usuario desde el tojen 
+    const token =req.headers.authorization.split('Bearer')[1];
+    //con esta linea desencrito el token
+    // console.log("token",jwt_decode(token));
+    const  user=jwt_decode(token)['http://localhost/userData'];
+    console.log(user);
+
+    //6.2. cnon el correo del usuario o con el id de auth0, veiricar si el usuario ua esta en la bd  o no
+    const baseDeDatos= getDB();
+    await baseDeDatos.collection('Usuario').findOne({email: user.email}, 
+      async (err, response)=>{
+      console.log("response consulta bd",response);
+      if(response){
+    //7.1. si el usuario ya esta en la bd, devuelve la info del usuario
+        callback(err, response);
+      }else{
+    //eliminamos el _id que proporciona Auth0 para quedarnos conel ObjectID de BD
+    user.auth0ID = user._id;
+    delete user._id;
+    //asignacion de rol de usuario que se registra
+    user.rol='inactivo';
+
+    //7.2.si el usuario no esta en la bd, lo crea y devuelve la info
+    await crearUsuario(user, (err, respuesta)=> callback(err,user));
+    };
+  });
+};
+
+
 //controlador para editar  Usuarios
 
 const editarUsuario=async (id, edicion, callback)=>{
@@ -55,4 +87,4 @@ const eliminarUsuario=async (id, callback)=>{
     
 };
 
-export {queryAllUsers, crearUsuario, editarUsuario, eliminarUsuario, consultarUsuario};
+export {queryAllUsers, crearUsuario, editarUsuario, eliminarUsuario, consultarUsuario, consultarOCrearUsuario};
