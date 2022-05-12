@@ -31,6 +31,7 @@ const consultarUsuario=async(id,callback)=>{
 
 //controlador para consultar usuario logeado en la BD o crearlo si no esta en la BD
 const consultarOCrearUsuario= async (req, callback)=>{
+  console.log("Estoy llegando a crear usuario");
     //6.1.obtener los datos del usuario desde el tojen 
     const token =req.headers.authorization.split('Bearer')[1];
     //con esta linea desencrito el token
