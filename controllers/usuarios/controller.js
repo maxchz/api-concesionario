@@ -50,8 +50,9 @@ const consultarOCrearUsuario= async (req, callback)=>{
     //eliminamos el _id que proporciona Auth0 para quedarnos conel ObjectID de BD
     user.auth0ID = user._id;
     delete user._id;
-    //asignacion de rol de usuario que se registra
-    user.rol='inactivo';
+    //cuando se crea un usuario no le asignamos un rol y le dejamos en estado pendiente
+    user.rol='sin rol';
+    user.estado= 'pendiente';
 
     //7.2.si el usuario no esta en la bd, lo crea y devuelve la info
     await crearUsuario(user, (err, respuesta)=> callback(err,user));

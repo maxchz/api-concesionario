@@ -12,6 +12,7 @@ import rutasVentas from './views/ventas/rutas.js';
 import jwt from 'express-jwt';
 import jwks  from 'jwks-rsa';
 import { auth } from 'express-oauth2-jwt-bearer';
+import autorizacionEstadoUsuario from './middleware/autorizacionEstadoUsuario.js';
 
 
 
@@ -45,6 +46,10 @@ const checkJwt = auth({
 //4 Y 5- ENVIAMOS DATOS AL BACKEND PARA QUE DEVUELVA SI ES VALIDO O NO
 
 app.use(checkJwt);
+
+//uso el middleware personalizado antes de las rutas
+app.use(autorizacionEstadoUsuario);
+
 // le indico al server que rutas debe usar, exportamos el codgio de rutas.js
 app.use(rutasVehiculos);
 app.use(rutasUsuarios);
