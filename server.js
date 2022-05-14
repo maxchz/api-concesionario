@@ -18,6 +18,8 @@ import autorizacionEstadoUsuario from './middleware/autorizacionEstadoUsuario.js
 
 dotenv.config({path:'./.env'});
 
+const port = process.env.PORT || 5000;
+
 
 // Cliente creado al que debo conectarme, a la clase MongoClient debo pasarle dos parametros
 // el string de concexion y dos parametros que recomienda mongo useNewUrlParser y useUnifiedTopology
@@ -68,8 +70,8 @@ app.use(rutasVentas);
  const main =()=>{
      //A la funcion connect se le pasand dos parametros un error spor si no funciona y la BD propiemente dicha
      //Con esta linea de codigo se realiza la conexion a la BD
-     return (app.listen(process.env.PORT,()=>{
-        console.log(`escuchando puerto ${process.env.PORT}!!! `)}))
+     return (app.listen(port,()=>{
+        console.log(`escuchando puerto ${port}!!! `)}))
 };
 // Llamo a la funcion conectar y le paso el name, que seria el callback que ejecuta conectarDB una vez que realizo su tareas de conectarse
  conectarDB(main);
