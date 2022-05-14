@@ -10,7 +10,7 @@
     "start": "node server.js"
   },
     "engines": {
-    "node": "16.14.x"
+    "node": "16.x"
   },
   "dependencies": {
     "bearer": "^0.0.20",
