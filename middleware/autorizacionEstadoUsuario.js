@@ -6,7 +6,7 @@ import jwt_decode from 'jwt-decode';
 const autorizacionEstadoUsuario = async (req, res, next)=>{
     //1- obtener el ussuario desde el token
     const token =req.headers.authorization.split('Bearer')[1];
-    const  user=jwt_decode(token)['https://secret-shelf-03392.herokuapp.com/userData'];
+    const  user=jwt_decode(token)['http://localhost/userData'];
     console.log(user);
 
     //2- consultar el usuario en la bd
