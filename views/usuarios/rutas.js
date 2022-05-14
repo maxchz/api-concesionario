@@ -1,5 +1,5 @@
 import Express from 'express';
-import {queryAllUsers, crearUsuario, editarUsuario, eliminarUsuario,consultarUsuario, consultarOCrearUsuario} from '../../controllers/Usuarios/controller.js';
+import {queryAllUsers, crearUsuario, editarUsuario, eliminarUsuario,consultarUsuario, consultarOCrearUsuario} from '../../controllers/usuarios/controller.js';
 
 
 
