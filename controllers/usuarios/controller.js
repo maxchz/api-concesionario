@@ -36,7 +36,7 @@ const consultarOCrearUsuario= async (req, callback)=>{
     const token =req.headers.authorization.split('Bearer')[1];
     //con esta linea desencrito el token
     // console.log("token",jwt_decode(token));
-    const  user=jwt_decode(token)['https://localhost/userData'];
+    const  user=jwt_decode(token)['http://localhost/userData'];
     console.log(user);
 
     //6.2. cnon el correo del usuario o con el id de auth0, veiricar si el usuario ua esta en la bd  o no
