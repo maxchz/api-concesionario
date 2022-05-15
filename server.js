@@ -18,7 +18,7 @@ import autorizacionEstadoUsuario from './middleware/autorizacionEstadoUsuario.js
 
 dotenv.config({path:'./.env'});
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT;
 
 
 // Cliente creado al que debo conectarme, a la clase MongoClient debo pasarle dos parametros
