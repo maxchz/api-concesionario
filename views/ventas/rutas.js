@@ -1,5 +1,5 @@
 import Express from 'express';
-import {queryAllSales, crearVenta, editarVenta, eliminarVenta,consultarVenta} from '../../controllers/Ventas/controller.js';
+import {queryAllSales, crearVenta, editarVenta, eliminarVenta,consultarVenta} from '../../controllers/ventas/controller.js';
 
 
 
